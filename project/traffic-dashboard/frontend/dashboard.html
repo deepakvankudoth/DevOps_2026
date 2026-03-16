@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dashboard - Smart Traffic Management</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="/public/css/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="d-flex">
+    <nav class="sidebar bg-dark text-white p-3" style="width: 260px;">
+      <h5>Smart Traffic</h5>
+      <ul class="nav flex-column">
+        <li class="nav-item"><a class="nav-link text-white active" href="dashboard.html">Dashboard</a></li>
+        <li class="nav-item"><a class="nav-link text-white" href="analytics.html">Analytics</a></li>
+        <li class="nav-item"><a class="nav-link text-white" href="#" onclick="logout()">Logout</a></li>
+      </ul>
+      <button class="btn btn-sm btn-secondary mt-3" onclick="toggleDarkMode()">Dark Mode</button>
+    </nav>
+    <div class="flex-grow-1 p-3">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>Traffic Monitoring Dashboard</h2>
+        <span id="loading">⏳ auto-refresh in progress</span>
+      </div>
+
+      <div id="alertBox"></div>
+      <div id="widgetData"></div>
+
+      <div class="row">
+        <div class="col-md-6 mb-3"><div class="card p-3"><h5>Vehicles Per Minute</h5><canvas id="vehiclesPerMinute"></canvas></div></div>
+        <div class="col-md-6 mb-3"><div class="card p-3"><h5>Traffic Density (Hourly)</h5><canvas id="trafficDensity"></canvas></div></div>
+      </div>
+      <div class="row">
+        <div class="col-md-12 mb-3"><div class="card p-3"><h5>Daily Trend</h5><canvas id="dailyTrend"></canvas></div></div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-8">
+          <div class="card p-3 mb-3">
+            <h5>Recent Vehicle Data</h5>
+            <div class="table-responsive"><table class="table table-striped"><thead><tr><th>Time</th><th>Camera</th><th>Count</th><th>Status</th></tr></thead><tbody id="vehicleTableBody"></tbody></table></div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card p-3 mb-3">
+            <h5>Camera Locations</h5>
+            <form onsubmit="addCamera(event)">
+              <div class="mb-2"><input id="cameraLocation" class="form-control" type="text" placeholder="New location" required></div>
+              <button class="btn btn-primary w-100" type="submit">Add Camera</button>
+            </form>
+            <ul class="list-group mt-2" id="cameraList"></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="/public/js/app.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

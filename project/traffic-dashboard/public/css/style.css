@@ -1,0 +1,57 @@
+:root {
+  --bg: #f4f7fc;
+  --text: #333;
+  --card: #ffffff;
+  --primary: #0d6efd;
+  --danger: #dc3545;
+  --success: #198754;
+  --warning: #ffc107;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.dark-mode {
+  --bg: #121620;
+  --text: #e2e8f0;
+  --card: #1f2937;
+  --primary: #60a5fa;
+}
+
+.card {
+  background: var(--card);
+  border-radius: 0.7rem;
+  border: 1px solid #e2e8f0;
+}
+
+.sidebar {
+  min-height: 100vh;
+}
+
+.sidebar .nav-link {
+  color: #fff;
+}
+
+.sidebar .nav-link.active,
+.sidebar .nav-link:hover {
+  background-color: rgba(255,255,255,0.15);
+  border-radius: 0.5rem;
+}
+
+#loading {
+  display: none;
+  cursor: progress;
+}
+
+.traffic-alert {
+  margin: 0.5rem 0;
+}
+
+@media (max-width: 992px) {
+  .sidebar { min-height: auto; }
+}
