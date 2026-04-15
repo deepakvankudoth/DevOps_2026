@@ -13,8 +13,9 @@ async function authRequest(url, options = {}) {
 
   const res = await fetch(url, options);
   if (res.status === 401) {
-    logout();
-    throw new Error('Unauthorized');
+    // Don't immediately logout; allow dashboard to display a specific message and keep user in place.
+    const message = await res.text().catch(() => 'Unauthorized');
+    throw new Error(message || 'Unauthorized');
   }
   const data = await res.json();
   if (!res.ok) throw new Error(data.message || 'Error');
@@ -105,9 +106,14 @@ async function loadDashboard() {
     }
 
   } catch (err) {
-    console.error(err);
-    alert('Failed to load dashboard. Try login again.');
-    logout();
+    console.error('Dashboard load failed', err);
+    const alertBox = document.querySelector('#alertBox');
+    if (alertBox) {
+      alertBox.innerHTML = `<div class="alert alert-warning" role="alert">Dashboard load failed: ${err.message || 'Try again'}.</div>`;
+    } else {
+      alert(`Dashboard load failed: ${err.message || 'Try again'}.`);
+    }
+    // do not force logout; allow user to retry manually
   }
 }
 
@@ -121,7 +127,30 @@ async function loadAnalytics() {
     const ctx = document.querySelector('#analyticsChart').getContext('2d');
     const labels = analytics.perHour.map(x => x._id + ':00');
     const values = analytics.perHour.map(x => x.total);
-    new Chart(ctx, { type: 'line', data: { labels, datasets: [{ label: 'Daily Vehicle Count', data: values, borderColor: '#0d6efd', backgroundColor: 'rgba(13,110,253,0.2)', fill: true }] }, options: { responsive: true } });
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels,
+        datasets: [{
+          label: 'Daily Vehicle Count',
+          data: values,
+          borderColor: '#0d6efd',
+          backgroundColor: 'rgba(13,110,253,0.2)',
+          fill: true,
+          tension: 0.4,
+          pointRadius: 5,
+          pointBackgroundColor: '#0d6efd'
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
   } catch (err) {
     console.error(err);
     logout();
